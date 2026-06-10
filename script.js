@@ -236,7 +236,7 @@ function initContactForm() {
 
             // Open WhatsApp with pre-filled message
             setTimeout(() => {
-                window.open(`https://wa.me/919876543210?text=${whatsappMsg}`, '_blank');
+                window.open(`https://wa.me/917010872398?text=${whatsappMsg}`, '_blank');
             }, 500);
 
             // Reset form
