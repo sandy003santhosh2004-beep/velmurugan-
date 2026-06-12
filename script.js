@@ -95,8 +95,8 @@ function navigateTo(pageId, animate = true) {
 
     if (!targetPage) return;
 
-    // Already active — do nothing
-    if (targetPage.classList.contains('active')) return;
+    // Already active — do nothing (only on animated routing clicks)
+    if (animate && targetPage.classList.contains('active')) return;
 
     if (animate) {
         // Find and exit the current active page
