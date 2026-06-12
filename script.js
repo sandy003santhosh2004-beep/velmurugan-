@@ -1,20 +1,15 @@
 /* =============================================
-   VELMURUGAN OIL SHOP — Interactive Features
+   VELMURUGAN OIL SHOP — SPA Router & Features
    ============================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Hide preloader
     initPreloader();
-    // Initialize all modules
     initNavbar();
     initMobileMenu();
-    initScrollAnimations();
+    initPageRouter();
     initProductFilter();
-    initCounterAnimation();
     initContactForm();
-    initBackToTop();
-    initSmoothScroll();
-    initActiveNavLink();
+    initCounterAnimation();
 });
 
 /* =============================================
@@ -27,38 +22,27 @@ function initPreloader() {
     window.addEventListener('load', () => {
         setTimeout(() => {
             preloader.classList.add('hidden');
-            // Remove preloader from DOM after animation
-            setTimeout(() => {
-                preloader.remove();
-            }, 600);
-        }, 1200);
+            setTimeout(() => preloader.remove(), 700);
+        }, 1000);
     });
 
-    // Fallback: hide preloader after 3 seconds regardless
-    setTimeout(() => {
-        preloader.classList.add('hidden');
-    }, 3000);
+    // Fallback
+    setTimeout(() => preloader.classList.add('hidden'), 3000);
 }
 
 /* =============================================
-   NAVBAR — Scroll Effect
+   NAVBAR — Glassmorphic Scroll Effect
    ============================================= */
 function initNavbar() {
     const navbar = document.getElementById('navbar');
     if (!navbar) return;
 
-    let lastScroll = 0;
-
     window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
-
-        if (currentScroll > 50) {
+        if (window.pageYOffset > 20) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
-
-        lastScroll = currentScroll;
     }, { passive: true });
 }
 
@@ -76,9 +60,8 @@ function initMobileMenu() {
         document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
     });
 
-    // Close menu when a link is clicked
-    const links = navLinks.querySelectorAll('.nav-link');
-    links.forEach(link => {
+    // Close on link click
+    navLinks.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
             toggle.classList.remove('active');
             navLinks.classList.remove('active');
@@ -88,28 +71,95 @@ function initMobileMenu() {
 }
 
 /* =============================================
-   SCROLL ANIMATIONS
+   SPA PAGE ROUTER
    ============================================= */
-function initScrollAnimations() {
-    const elements = document.querySelectorAll('.animate-on-scroll');
-    if (elements.length === 0) return;
+function initPageRouter() {
+    // All clickable elements with [data-page]
+    document.body.addEventListener('click', (e) => {
+        const trigger = e.target.closest('[data-page]');
+        if (!trigger) return;
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                // Stagger animation delay
-                setTimeout(() => {
-                    entry.target.classList.add('animated');
-                }, index * 100);
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        e.preventDefault();
+        const targetPage = trigger.dataset.page;
+        if (targetPage) navigateTo(targetPage);
     });
 
-    elements.forEach(el => observer.observe(el));
+    // Show home by default
+    navigateTo('home', false);
+}
+
+function navigateTo(pageId, animate = true) {
+    const allPages = document.querySelectorAll('.page-section');
+    const targetPage = document.getElementById(`page-${pageId}`);
+    const allNavLinks = document.querySelectorAll('.nav-link');
+
+    if (!targetPage) return;
+
+    // Already active — do nothing
+    if (targetPage.classList.contains('active')) return;
+
+    if (animate) {
+        // Find and exit the current active page
+        const currentPage = document.querySelector('.page-section.active');
+        if (currentPage) {
+            currentPage.classList.add('page-exit');
+            setTimeout(() => {
+                currentPage.classList.remove('active', 'page-exit');
+                showPage(targetPage, allNavLinks, pageId);
+            }, 220);
+        } else {
+            showPage(targetPage, allNavLinks, pageId);
+        }
+    } else {
+        // No animation on first load
+        allPages.forEach(p => p.classList.remove('active'));
+        targetPage.classList.add('active');
+        updateNavLinks(allNavLinks, pageId);
+        triggerReveal(targetPage);
+        // Run counters on home
+        if (pageId === 'home') initCounterAnimation();
+    }
+
+    // Scroll page to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showPage(targetPage, allNavLinks, pageId) {
+    document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active', 'page-exit'));
+    targetPage.classList.add('active');
+    updateNavLinks(allNavLinks, pageId);
+
+    // Re-trigger reveal animations
+    triggerReveal(targetPage);
+
+    // Run counters when visiting home
+    if (pageId === 'home') initCounterAnimation();
+}
+
+function updateNavLinks(allNavLinks, pageId) {
+    allNavLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.dataset.page === pageId) link.classList.add('active');
+    });
+}
+
+/* =============================================
+   REVEAL ANIMATIONS
+   ============================================= */
+function triggerReveal(pageEl) {
+    const elements = pageEl.querySelectorAll('.reveal');
+
+    // Reset before animating
+    elements.forEach(el => {
+        el.classList.remove('revealed');
+    });
+
+    // Stagger reveal
+    elements.forEach((el, i) => {
+        setTimeout(() => {
+            el.classList.add('revealed');
+        }, 80 + i * 60);
+    });
 }
 
 /* =============================================
@@ -118,11 +168,10 @@ function initScrollAnimations() {
 function initProductFilter() {
     const filterBtns = document.querySelectorAll('.filter-btn');
     const productCards = document.querySelectorAll('.product-card');
-    if (filterBtns.length === 0 || productCards.length === 0) return;
+    if (!filterBtns.length || !productCards.length) return;
 
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Update active button
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
@@ -130,25 +179,22 @@ function initProductFilter() {
 
             productCards.forEach((card, index) => {
                 const category = card.dataset.category || '';
+                const show = filter === 'all' || category.includes(filter);
 
-                if (filter === 'all' || category.includes(filter)) {
+                if (show) {
+                    card.style.display = '';
                     card.style.opacity = '0';
                     card.style.transform = 'translateY(20px)';
-                    card.style.display = '';
-
                     setTimeout(() => {
                         card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
                         card.style.opacity = '1';
                         card.style.transform = 'translateY(0)';
-                    }, index * 80);
+                    }, index * 70);
                 } else {
-                    card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
                     card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
-
-                    setTimeout(() => {
-                        card.style.display = 'none';
-                    }, 300);
+                    card.style.transform = 'translateY(16px)';
+                    setTimeout(() => { card.style.display = 'none'; }, 260);
                 }
             });
         });
@@ -156,40 +202,31 @@ function initProductFilter() {
 }
 
 /* =============================================
-   COUNTER ANIMATION
+   COUNTER ANIMATION (Hero Stats)
    ============================================= */
 function initCounterAnimation() {
     const counters = document.querySelectorAll('.stat-number');
-    if (counters.length === 0) return;
+    if (!counters.length) return;
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateCounter(entry.target);
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
-
-    counters.forEach(counter => observer.observe(counter));
+    counters.forEach(counter => {
+        animateCounter(counter);
+    });
 }
 
 function animateCounter(element) {
     const target = parseInt(element.dataset.count, 10);
-    const duration = 2000;
+    const duration = 1800;
     const startTime = performance.now();
 
-    function easeOutQuart(t) {
-        return 1 - Math.pow(1 - t, 4);
+    function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
     }
 
     function update(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        const easedProgress = easeOutQuart(progress);
-
-        const current = Math.floor(easedProgress * target);
-        element.textContent = current.toLocaleString();
+        const eased = easeOutCubic(progress);
+        element.textContent = Math.floor(eased * target).toLocaleString();
 
         if (progress < 1) {
             requestAnimationFrame(update);
@@ -202,7 +239,7 @@ function animateCounter(element) {
 }
 
 /* =============================================
-   CONTACT FORM
+   CONTACT FORM — WhatsApp Integration
    ============================================= */
 function initContactForm() {
     const form = document.getElementById('contact-form');
@@ -212,119 +249,36 @@ function initContactForm() {
         e.preventDefault();
 
         const submitBtn = document.getElementById('form-submit');
-        const originalContent = submitBtn.innerHTML;
+        const originalHTML = submitBtn.innerHTML;
 
-        // Show loading state
         submitBtn.innerHTML = '<span>Sending...</span>';
         submitBtn.disabled = true;
-        submitBtn.style.opacity = '0.7';
+        submitBtn.style.opacity = '0.75';
 
-        // Simulate form submission
         setTimeout(() => {
-            submitBtn.innerHTML = '<span>✅ Message Sent!</span>';
-            submitBtn.style.background = 'linear-gradient(135deg, #5A8F3C, #2D5016)';
-
-            // Build WhatsApp message
-            const name = document.getElementById('form-name').value;
-            const phone = document.getElementById('form-phone').value;
+            const name    = document.getElementById('form-name').value;
+            const phone   = document.getElementById('form-phone').value;
             const product = document.getElementById('form-product').value;
             const message = document.getElementById('form-message').value;
 
-            const whatsappMsg = encodeURIComponent(
+            submitBtn.innerHTML = '<span>✅ Message Sent!</span>';
+            submitBtn.style.background = 'linear-gradient(135deg, #5A8F3C, #2D5016)';
+
+            const waMsg = encodeURIComponent(
                 `Hi Velmurugan Oil Shop!\n\nName: ${name}\nPhone: ${phone}\nProduct: ${product}\nMessage: ${message}`
             );
 
-            // Open WhatsApp with pre-filled message
             setTimeout(() => {
-                window.open(`https://wa.me/917010872398?text=${whatsappMsg}`, '_blank');
-            }, 500);
+                window.open(`https://wa.me/917010872398?text=${waMsg}`, '_blank');
+            }, 400);
 
-            // Reset form
             setTimeout(() => {
                 form.reset();
-                submitBtn.innerHTML = originalContent;
+                submitBtn.innerHTML = originalHTML;
                 submitBtn.disabled = false;
                 submitBtn.style.opacity = '1';
                 submitBtn.style.background = '';
             }, 3000);
-        }, 1500);
+        }, 1200);
     });
-}
-
-/* =============================================
-   BACK TO TOP
-   ============================================= */
-function initBackToTop() {
-    const btn = document.getElementById('back-to-top');
-    if (!btn) return;
-
-    window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 500) {
-            btn.classList.add('visible');
-        } else {
-            btn.classList.remove('visible');
-        }
-    }, { passive: true });
-
-    btn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-}
-
-/* =============================================
-   SMOOTH SCROLL
-   ============================================= */
-function initSmoothScroll() {
-    const links = document.querySelectorAll('a[href^="#"]');
-
-    links.forEach(link => {
-        link.addEventListener('click', (e) => {
-            const targetId = link.getAttribute('href');
-            if (targetId === '#') return;
-
-            const target = document.querySelector(targetId);
-            if (!target) return;
-
-            e.preventDefault();
-
-            const navbar = document.getElementById('navbar');
-            const navHeight = navbar ? navbar.offsetHeight : 0;
-            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
-
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-        });
-    });
-}
-
-/* =============================================
-   ACTIVE NAV LINK ON SCROLL
-   ============================================= */
-function initActiveNavLink() {
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
-    if (sections.length === 0 || navLinks.length === 0) return;
-
-    window.addEventListener('scroll', () => {
-        let current = '';
-        const scrollPosition = window.pageYOffset + 200;
-
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
-
-            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('active');
-            }
-        });
-    }, { passive: true });
 }
