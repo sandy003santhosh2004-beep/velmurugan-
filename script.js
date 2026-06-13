@@ -2,14 +2,20 @@
    VELMURUGAN OIL SHOP — SPA Router & Features
    ============================================= */
 
+// Paste your deployed Google Apps Script Web App URL below
+const GOOGLE_SHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwlQDL8Ey6VyjfZy8wmGldJr-UiTp9hnxWoqGQHNTczJ0-DhiMaGw3nGcWTquu5Cl787A/exec"; 
+
 document.addEventListener('DOMContentLoaded', () => {
     initPreloader();
     initNavbar();
     initMobileMenu();
     initPageRouter();
     initProductFilter();
+    initZomatoCart();
+    initFormOrderItems();
     initContactForm();
     initCounterAnimation();
+    initHeroParallax();
 });
 
 /* =============================================
@@ -81,6 +87,20 @@ function initPageRouter() {
 
         e.preventDefault();
         const targetPage = trigger.dataset.page;
+
+        // If clicking an order button on a product card, pre-populate contact details
+        if (trigger.classList.contains('product-btn')) {
+            const product = trigger.dataset.product;
+            const size = trigger.dataset.selectedSize;
+            const price = trigger.dataset.selectedPrice;
+            if (product && size) {
+                const formMessage = document.getElementById('form-message');
+                if (formMessage) {
+                    formMessage.value = `Hi Velmurugan Oil Shop, I would like to order: ${product} (${size} for ${price}). Please contact me to process this order.`;
+                }
+            }
+        }
+
         if (targetPage) navigateTo(targetPage);
     });
 
@@ -251,21 +271,46 @@ function initContactForm() {
         const submitBtn = document.getElementById('form-submit');
         const originalHTML = submitBtn.innerHTML;
 
-        submitBtn.innerHTML = '<span>Sending...</span>';
+        // Check if cart is empty
+        let totalItems = 0;
+        for (const key in cartState) {
+            totalItems += cartState[key].qty;
+        }
+        if (totalItems === 0) {
+            alert("Please add at least one oil option to your order.");
+            return;
+        }
+
+        submitBtn.innerHTML = '<span>Sending Order...</span>';
         submitBtn.disabled = true;
         submitBtn.style.opacity = '0.75';
 
         setTimeout(() => {
             const name    = document.getElementById('form-name').value;
             const phone   = document.getElementById('form-phone').value;
-            const product = document.getElementById('form-product').value;
-            const message = document.getElementById('form-message').value;
+            const orderMsg = generateCartMessage(false);
 
-            submitBtn.innerHTML = '<span>✅ Message Sent!</span>';
-            submitBtn.style.background = 'linear-gradient(135deg, #5A8F3C, #2D5016)';
+            // Log order to Google Sheets in background if web app URL is configured
+            if (GOOGLE_SHEET_SCRIPT_URL) {
+                const payload = {
+                    name: name,
+                    phone: phone,
+                    orderList: orderMsg,
+                    total: getCartTotalFormatted()
+                };
+                fetch(GOOGLE_SHEET_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).catch(err => console.error('Google Sheets background log failed:', err));
+            }
+
+            submitBtn.innerHTML = '<span>✅ Order Placed!</span>';
+            submitBtn.style.background = 'linear-gradient(135deg, #2D5016, #1A3B2B)';
 
             const waMsg = encodeURIComponent(
-                `Hi Velmurugan Oil Shop!\n\nName: ${name}\nPhone: ${phone}\nProduct: ${product}\nMessage: ${message}`
+                `Hi Velmurugan Oil Shop!\n\nName: ${name}\nPhone: ${phone}\n\n${generateCartMessage(true)}`
             );
 
             setTimeout(() => {
@@ -273,6 +318,12 @@ function initContactForm() {
             }, 400);
 
             setTimeout(() => {
+                // Clear cart state
+                for (const key in cartState) {
+                    delete cartState[key];
+                }
+                updateCartBar();
+
                 form.reset();
                 submitBtn.innerHTML = originalHTML;
                 submitBtn.disabled = false;
@@ -282,3 +333,364 @@ function initContactForm() {
         }, 1200);
     });
 }
+
+/* =============================================
+   HERO PARALLAX INTERACTION
+   ============================================= */
+function initHeroParallax() {
+    const hero = document.querySelector('.hero');
+    const bottle = document.querySelector('.hero-oil-bottle');
+    const floaters = document.querySelectorAll('.floating-element');
+
+    if (!hero || !bottle) return;
+
+    hero.addEventListener('mousemove', (e) => {
+        const { clientX, clientY } = e;
+        const rect = hero.getBoundingClientRect();
+        const xVal = (clientX - rect.left - rect.width / 2) / (rect.width / 2);
+        const yVal = (clientY - rect.top - rect.height / 2) / (rect.height / 2);
+
+        // Shift bottle slightly
+        bottle.style.transform = `translate(-50%, -50%) translate(${xVal * 12}px, ${yVal * 12}px) rotate(${xVal * 1.5}deg)`;
+
+        // Shift floating elements in relative directions
+        floaters.forEach((el, index) => {
+            const speed = (index + 1) * 8;
+            el.style.transform = `translate(${xVal * -speed}px, ${yVal * -speed}px) rotate(${xVal * 4}deg)`;
+        });
+    });
+
+    hero.addEventListener('mouseleave', () => {
+        bottle.style.transform = `translate(-50%, -50%) translate(0, 0) rotate(0deg)`;
+        floaters.forEach(el => {
+            el.style.transform = `translate(0, 0) rotate(0deg)`;
+        });
+    });
+}
+
+/* =============================================
+   PRODUCT ZOMATO CART FLOW
+   ============================================= */
+const cartState = {};
+
+function initZomatoCart() {
+    const variantItems = document.querySelectorAll('.variant-item');
+    if (!variantItems.length) return;
+
+    variantItems.forEach(item => {
+        const btnAdd = item.querySelector('.btn-add');
+        const qtyCounter = item.querySelector('.qty-counter');
+        const qtyNumber = item.querySelector('.qty-number');
+        const btnMinus = item.querySelector('.btn-minus');
+        const btnPlus = item.querySelector('.btn-plus');
+
+        const product = item.dataset.product;
+        const size = item.dataset.size;
+        const price = parseInt(item.dataset.price, 10);
+        const itemKey = `${product} (${size})`;
+
+        function updateItemUI(qty) {
+            if (qty > 0) {
+                btnAdd.style.display = 'none';
+                qtyCounter.style.display = 'flex';
+                qtyNumber.textContent = qty;
+            } else {
+                btnAdd.style.display = 'block';
+                qtyCounter.style.display = 'none';
+                qtyNumber.textContent = 0;
+            }
+        }
+
+        btnAdd.addEventListener('click', () => {
+            cartState[itemKey] = { product, size, price, qty: 1 };
+            updateItemUI(1);
+            updateCartBar();
+        });
+
+        btnPlus.addEventListener('click', () => {
+            if (!cartState[itemKey]) {
+                cartState[itemKey] = { product, size, price, qty: 0 };
+            }
+            cartState[itemKey].qty += 1;
+            updateItemUI(cartState[itemKey].qty);
+            updateCartBar();
+        });
+
+        btnMinus.addEventListener('click', () => {
+            if (cartState[itemKey] && cartState[itemKey].qty > 0) {
+                cartState[itemKey].qty -= 1;
+                updateItemUI(cartState[itemKey].qty);
+                if (cartState[itemKey].qty === 0) {
+                    delete cartState[itemKey];
+                }
+                updateCartBar();
+            }
+        });
+    });
+
+    // Handle Floating Cart Bar Checkout integrations
+    const whatsappBtn = document.getElementById('cart-whatsapp-btn');
+    if (whatsappBtn) {
+        whatsappBtn.addEventListener('click', () => {
+            const nameField = document.getElementById('form-name');
+            const phoneField = document.getElementById('form-phone');
+
+            if (!nameField || !phoneField) return;
+
+            if (!nameField.value.trim() || !phoneField.value.trim()) {
+                // Scroll to contact form
+                navigateTo('order');
+                setTimeout(() => {
+                    nameField.focus();
+                    nameField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Visual warning highlights
+                    nameField.style.borderColor = 'var(--color-accent)';
+                    phoneField.style.borderColor = 'var(--color-accent)';
+                    
+                    // Reset highlights after 3s
+                    setTimeout(() => {
+                        nameField.style.borderColor = '';
+                        phoneField.style.borderColor = '';
+                    }, 3000);
+                }, 300);
+                return;
+            }
+
+            // Submit the form programmatically (runs Google Sheets logging + WhatsApp launch)
+            const form = document.getElementById('contact-form');
+            if (form) {
+                form.requestSubmit();
+            }
+        });
+    }
+
+    // Toggle cart preview popover only on chevron click
+    const cartChevron = document.getElementById('cart-chevron');
+    const cartPopover = document.getElementById('cart-preview-popover');
+    const cartClose = document.getElementById('cart-preview-close');
+    
+    if (cartChevron && cartPopover) {
+        cartChevron.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = cartPopover.style.display === 'flex';
+            cartPopover.style.display = isOpen ? 'none' : 'flex';
+            cartChevron.classList.toggle('open', !isOpen);
+            cartChevron.innerHTML = isOpen ? 'Items ▲' : 'Items ▼';
+        });
+        
+        if (cartClose) {
+            cartClose.addEventListener('click', (e) => {
+                e.stopPropagation();
+                cartPopover.style.display = 'none';
+                cartChevron.classList.remove('open');
+                cartChevron.innerHTML = 'Items ▲';
+            });
+        }
+        
+        // Close popover when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!cartPopover.contains(e.target) && e.target !== cartChevron && !cartChevron.contains(e.target)) {
+                cartPopover.style.display = 'none';
+                cartChevron.classList.remove('open');
+                cartChevron.innerHTML = 'Items ▲';
+            }
+        });
+    }
+}
+
+function updateCartBar() {
+    const bar = document.getElementById('floating-cart-bar');
+    if (!bar) return;
+    const countEl = bar.querySelector('.cart-count');
+    const totalEl = bar.querySelector('.cart-total');
+
+    let totalItems = 0;
+    let totalPrice = 0;
+
+    for (const key in cartState) {
+        totalItems += cartState[key].qty;
+        totalPrice += cartState[key].qty * cartState[key].price;
+    }
+
+    if (totalItems > 0) {
+        if (countEl) countEl.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''} added`;
+        if (totalEl) totalEl.textContent = `Total: ₹${totalPrice.toLocaleString()}`;
+        bar.classList.add('active');
+    } else {
+        bar.classList.remove('active');
+        const cartPopover = document.getElementById('cart-preview-popover');
+        if (cartPopover) {
+            cartPopover.style.display = 'none';
+            const cartChevron = document.getElementById('cart-chevron');
+            if (cartChevron) {
+                cartChevron.classList.remove('open');
+                cartChevron.innerHTML = 'Items ▲';
+            }
+        }
+    }
+
+    // Update preview popover list
+    const cppList = document.getElementById('cpp-items-list');
+    if (cppList) {
+        cppList.innerHTML = '';
+        for (const key in cartState) {
+            const item = cartState[key];
+            const div = document.createElement('div');
+            div.className = 'cpp-item';
+            div.innerHTML = `
+                <span class="cpp-item-name">${item.product} (${item.size}) x ${item.qty}</span>
+                <span class="cpp-item-price">₹${(item.qty * item.price).toLocaleString()}</span>
+            `;
+            cppList.appendChild(div);
+        }
+    }
+
+    // Update synchronization across both pages
+    updateFormOrderItemsUI();
+    updateCatalogQuantitiesUI();
+}
+
+function generateCartMessage(isWhatsApp = false) {
+    let msg = isWhatsApp 
+        ? "Hi Velmurugan Oil Shop! I would like to place an order for the following cold-pressed oils:\n\n"
+        : "Hi Velmurugan Oil Shop, I would like to place an order for:\n\n";
+
+    let totalPrice = 0;
+    for (const key in cartState) {
+        const item = cartState[key];
+        msg += `• ${item.product} (${item.size}) x ${item.qty} — ₹${(item.qty * item.price).toLocaleString()}\n`;
+        totalPrice += item.qty * item.price;
+    }
+
+    msg += `\nTotal Amount: ₹${totalPrice.toLocaleString()}`;
+    return msg;
+}
+
+function getCartTotalFormatted() {
+    let totalPrice = 0;
+    for (const key in cartState) {
+        totalPrice += cartState[key].qty * cartState[key].price;
+    }
+    return totalPrice > 0 ? `₹${totalPrice.toLocaleString()}` : "N/A";
+}
+
+/* =============================================
+   FORM ORDER ITEMS SYNCHRONIZATION
+   ============================================= */
+function initFormOrderItems() {
+    const formItems = document.querySelectorAll('.form-order-item');
+    if (!formItems.length) return;
+
+    formItems.forEach(item => {
+        const product = item.dataset.product;
+        const select = item.querySelector('.foi-size-select');
+        const btnAdd = item.querySelector('.btn-add');
+        const btnMinus = item.querySelector('.btn-minus');
+        const btnPlus = item.querySelector('.btn-plus');
+
+        function getSelectedItemDetails() {
+            const selectedOption = select.options[select.selectedIndex];
+            const size = selectedOption.value;
+            const price = parseInt(selectedOption.dataset.price, 10);
+            const itemKey = `${product} (${size})`;
+            return { size, price, itemKey };
+        }
+
+        // Change quantity when variant size selector dropdown is changed
+        select.addEventListener('change', () => {
+            updateFormOrderItemsUI();
+        });
+
+        btnAdd.addEventListener('click', () => {
+            const { size, price, itemKey } = getSelectedItemDetails();
+            cartState[itemKey] = { product, size, price, qty: 1 };
+            updateCartBar();
+        });
+
+        btnPlus.addEventListener('click', () => {
+            const { size, price, itemKey } = getSelectedItemDetails();
+            if (!cartState[itemKey]) {
+                cartState[itemKey] = { product, size, price, qty: 0 };
+            }
+            cartState[itemKey].qty += 1;
+            updateCartBar();
+        });
+
+        btnMinus.addEventListener('click', () => {
+            const { size, itemKey } = getSelectedItemDetails();
+            if (cartState[itemKey] && cartState[itemKey].qty > 0) {
+                cartState[itemKey].qty -= 1;
+                if (cartState[itemKey].qty === 0) {
+                    delete cartState[itemKey];
+                }
+                updateCartBar();
+            }
+        });
+    });
+}
+
+function updateFormOrderItemsUI() {
+    const formItems = document.querySelectorAll('.form-order-item');
+    let totalPrice = 0;
+    
+    for (const key in cartState) {
+        totalPrice += cartState[key].qty * cartState[key].price;
+    }
+    
+    const totalValEl = document.getElementById('form-order-total-val');
+    if (totalValEl) {
+        totalValEl.textContent = `₹${totalPrice.toLocaleString()}`;
+    }
+
+    formItems.forEach(item => {
+        const product = item.dataset.product;
+        const select = item.querySelector('.foi-size-select');
+        if (!select) return;
+        
+        const selectedOption = select.options[select.selectedIndex];
+        const size = selectedOption.value;
+        const itemKey = `${product} (${size})`;
+        
+        const qty = (cartState[itemKey] && cartState[itemKey].qty) || 0;
+        
+        const btnAdd = item.querySelector('.btn-add');
+        const qtyCounter = item.querySelector('.qty-counter');
+        const qtyNumber = item.querySelector('.qty-number');
+        
+        if (qty > 0) {
+            if (btnAdd) btnAdd.style.display = 'none';
+            if (qtyCounter) qtyCounter.style.display = 'flex';
+            if (qtyNumber) qtyNumber.textContent = qty;
+        } else {
+            if (btnAdd) btnAdd.style.display = 'block';
+            if (qtyCounter) qtyCounter.style.display = 'none';
+            if (qtyNumber) qtyNumber.textContent = 0;
+        }
+    });
+}
+
+function updateCatalogQuantitiesUI() {
+    const variantItems = document.querySelectorAll('.variant-item');
+    variantItems.forEach(item => {
+        const btnAdd = item.querySelector('.btn-add');
+        const qtyCounter = item.querySelector('.qty-counter');
+        const qtyNumber = item.querySelector('.qty-number');
+        
+        const product = item.dataset.product;
+        const size = item.dataset.size;
+        const itemKey = `${product} (${size})`;
+        
+        const qty = (cartState[itemKey] && cartState[itemKey].qty) || 0;
+        
+        if (qty > 0) {
+            if (btnAdd) btnAdd.style.display = 'none';
+            if (qtyCounter) qtyCounter.style.display = 'flex';
+            if (qtyNumber) qtyNumber.textContent = qty;
+        } else {
+            if (btnAdd) btnAdd.style.display = 'block';
+            if (qtyCounter) qtyCounter.style.display = 'none';
+            if (qtyNumber) qtyNumber.textContent = 0;
+        }
+    });
+}
+
