@@ -3,7 +3,7 @@
    ============================================= */
 
 // Paste your deployed Google Apps Script Web App URL below
-const GOOGLE_SHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwlQDL8Ey6VyjfZy8wmGldJr-UiTp9hnxWoqGQHNTczJ0-DhiMaGw3nGcWTquu5Cl787A/exec"; 
+const GOOGLE_SHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwlQDL8Ey6VyjfZy8wmGldJr-UiTp9hnxWoqGQHNTczJ0-DhiMaGw3nGcWTquu5Cl787A/exec";
 
 document.addEventListener('DOMContentLoaded', () => {
     initPreloader();
@@ -286,8 +286,8 @@ function initContactForm() {
         submitBtn.style.opacity = '0.75';
 
         setTimeout(() => {
-            const name    = document.getElementById('form-name').value;
-            const phone   = document.getElementById('form-phone').value;
+            const name = document.getElementById('form-name').value;
+            const phone = document.getElementById('form-phone').value;
             const orderMsg = generateCartMessage(false);
 
             // Log order to Google Sheets in background if web app URL is configured
@@ -446,7 +446,7 @@ function initZomatoCart() {
                     // Visual warning highlights
                     nameField.style.borderColor = 'var(--color-accent)';
                     phoneField.style.borderColor = 'var(--color-accent)';
-                    
+
                     // Reset highlights after 3s
                     setTimeout(() => {
                         nameField.style.borderColor = '';
@@ -468,7 +468,7 @@ function initZomatoCart() {
     const cartChevron = document.getElementById('cart-chevron');
     const cartPopover = document.getElementById('cart-preview-popover');
     const cartClose = document.getElementById('cart-preview-close');
-    
+
     if (cartChevron && cartPopover) {
         cartChevron.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -477,7 +477,7 @@ function initZomatoCart() {
             cartChevron.classList.toggle('open', !isOpen);
             cartChevron.innerHTML = isOpen ? 'Items ▲' : 'Items ▼';
         });
-        
+
         if (cartClose) {
             cartClose.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -486,7 +486,7 @@ function initZomatoCart() {
                 cartChevron.innerHTML = 'Items ▲';
             });
         }
-        
+
         // Close popover when clicking outside
         document.addEventListener('click', (e) => {
             if (!cartPopover.contains(e.target) && e.target !== cartChevron && !cartChevron.contains(e.target)) {
@@ -551,7 +551,7 @@ function updateCartBar() {
 }
 
 function generateCartMessage(isWhatsApp = false) {
-    let msg = isWhatsApp 
+    let msg = isWhatsApp
         ? "Hi Velmurugan Oil Shop! I would like to place an order for the following cold-pressed oils:\n\n"
         : "Hi Velmurugan Oil Shop, I would like to place an order for:\n\n";
 
@@ -632,11 +632,11 @@ function initFormOrderItems() {
 function updateFormOrderItemsUI() {
     const formItems = document.querySelectorAll('.form-order-item');
     let totalPrice = 0;
-    
+
     for (const key in cartState) {
         totalPrice += cartState[key].qty * cartState[key].price;
     }
-    
+
     const totalValEl = document.getElementById('form-order-total-val');
     if (totalValEl) {
         totalValEl.textContent = `₹${totalPrice.toLocaleString()}`;
@@ -646,17 +646,17 @@ function updateFormOrderItemsUI() {
         const product = item.dataset.product;
         const select = item.querySelector('.foi-size-select');
         if (!select) return;
-        
+
         const selectedOption = select.options[select.selectedIndex];
         const size = selectedOption.value;
         const itemKey = `${product} (${size})`;
-        
+
         const qty = (cartState[itemKey] && cartState[itemKey].qty) || 0;
-        
+
         const btnAdd = item.querySelector('.btn-add');
         const qtyCounter = item.querySelector('.qty-counter');
         const qtyNumber = item.querySelector('.qty-number');
-        
+
         if (qty > 0) {
             if (btnAdd) btnAdd.style.display = 'none';
             if (qtyCounter) qtyCounter.style.display = 'flex';
@@ -675,13 +675,13 @@ function updateCatalogQuantitiesUI() {
         const btnAdd = item.querySelector('.btn-add');
         const qtyCounter = item.querySelector('.qty-counter');
         const qtyNumber = item.querySelector('.qty-number');
-        
+
         const product = item.dataset.product;
         const size = item.dataset.size;
         const itemKey = `${product} (${size})`;
-        
+
         const qty = (cartState[itemKey] && cartState[itemKey].qty) || 0;
-        
+
         if (qty > 0) {
             if (btnAdd) btnAdd.style.display = 'none';
             if (qtyCounter) qtyCounter.style.display = 'flex';
