@@ -1,4 +1,4 @@
-﻿/* =============================================
+/* =============================================
    VELMURUGAN OIL MILLS — Heritage Indian Edition
    ============================================= */
 
@@ -299,10 +299,14 @@ button { cursor: pointer; }
 }
 
 .logo-sub {
-    font-family: var(--font-script);
-    font-size: 0.88rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     color: var(--color-primary);
-    line-height: 1;
+    line-height: 1.2;
+    margin-top: 2px;
 }
 
 .nav-links { display: flex; align-items: center; gap: 2px; }
