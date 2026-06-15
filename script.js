@@ -314,7 +314,7 @@ function initContactForm() {
             );
 
             setTimeout(() => {
-                window.open(`https://wa.me/917010872398?text=${waMsg}`, '_blank');
+                window.open(`https://wa.me/916381766858?text=${waMsg}`, '_blank');
             }, 400);
 
             setTimeout(() => {
