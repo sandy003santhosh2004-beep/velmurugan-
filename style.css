@@ -88,7 +88,7 @@ body[data-active-page="home"] {
     --color-bg:            #FFFCE8;  /* Warm Yellow Cream */
     --color-bg-warm:       #FFF5B0;  /* Noticeable Yellow Wash */
     --color-bg-card:       #FFFEF5;
-    --color-bg-dark:       #1C1800;  /* Warm Dark with Yellow Undertone */
+    --color-bg-dark:       #FFFCE8;  /* Warm Yellow Cream instead of Warm Dark */
     --color-bg-section:    #FFF6C2;  /* Visible Yellow Parchment */
     --color-surface:       rgba(255, 229, 0, 0.08);
     --color-border:        rgba(255, 229, 0, 0.25);
@@ -103,7 +103,7 @@ body[data-active-page="home"] {
     /* Gradients — More Yellow */
     --gradient-primary:    linear-gradient(135deg, #FFE500 0%, #F0C800 50%, #D4A800 100%);
     --gradient-warm:       linear-gradient(135deg, #FFFCE8 0%, #FFF5B0 100%);
-    --gradient-hero:       linear-gradient(135deg, #1C1800 0%, #332E00 50%, #1C1800 100%);
+    --gradient-hero:       linear-gradient(135deg, #FFFCE8 0%, #FFF5B0 50%, #FFE500 100%);
     --gradient-gold:       linear-gradient(135deg, #FFF066 0%, #FFE500 35%, #F0C800 70%);
     --gradient-green:      linear-gradient(135deg, #B8860B 0%, #8B6914 100%);
     --gradient-card:       linear-gradient(145deg, #FFFEF5 0%, #FFF5B0 100%);
@@ -114,7 +114,7 @@ body[data-active-page="home"] {
     --shadow-orange-lg:    0 10px 40px rgba(255, 229, 0, 0.4);
 }
 
-/* Home-page scoped overrides for hardcoded rgba colors */
+/* Home-page scoped overrides for hardcoded rgba colors and dark sections */
 body[data-active-page="home"] .shape-1 {
     background: radial-gradient(circle, rgba(255, 229, 0, 0.35), transparent) !important;
 }
@@ -125,8 +125,9 @@ body[data-active-page="home"] .shape-3 {
     background: radial-gradient(circle, rgba(255, 215, 0, 0.22), transparent) !important;
 }
 body[data-active-page="home"] .hero-badge {
-    background: rgba(255, 229, 0, 0.18);
-    border-color: rgba(255, 229, 0, 0.4);
+    color: var(--color-secondary) !important;
+    background: rgba(240, 200, 0, 0.12) !important;
+    border-color: rgba(240, 200, 0, 0.3) !important;
 }
 body[data-active-page="home"] .hero-glow {
     background: radial-gradient(circle, rgba(255, 229, 0, 0.35) 0%, transparent 70%);
@@ -135,35 +136,135 @@ body[data-active-page="home"] .oil-drop {
     box-shadow: 0 0 40px rgba(255, 229, 0, 0.6);
 }
 body[data-active-page="home"] .features-strip {
-    background: linear-gradient(135deg, #1C1800, #332E00, #1C1800);
+    background: linear-gradient(135deg, #FFF6C2 0%, #FFF066 50%, #FFF6C2 100%) !important;
+    border-top: 1px solid rgba(240, 200, 0, 0.22) !important;
+    border-bottom: 1px solid rgba(240, 200, 0, 0.22) !important;
 }
-body[data-active-page="home"] .nav-link:hover {
-    color: var(--color-primary-light);
-    background: rgba(255, 229, 0, 0.1);
+body[data-active-page="home"] .feature-item {
+    background: rgba(255, 255, 255, 0.65) !important;
+    border: 1px solid rgba(240, 200, 0, 0.3) !important;
+    color: var(--color-text) !important;
 }
-body[data-active-page="home"] .nav-link.active {
-    color: var(--color-primary-light);
-    background: rgba(255, 229, 0, 0.15);
+body[data-active-page="home"] .feature-item:hover {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border-color: rgba(240, 200, 0, 0.5) !important;
 }
-body[data-active-page="home"] .section-tag {
-    background: rgba(255, 229, 0, 0.14);
-    border-color: rgba(255, 229, 0, 0.32);
+body[data-active-page="home"] .feature-text strong {
+    color: var(--color-text) !important;
 }
-body[data-active-page="home"] .why-card:hover {
-    border-color: rgba(255, 229, 0, 0.4);
+body[data-active-page="home"] .feature-text span {
+    color: var(--color-text-secondary) !important;
 }
-body[data-active-page="home"] .hero-stats {
-    background: rgba(255, 229, 0, 0.08);
-    border-color: rgba(255, 229, 0, 0.16);
-}
-body[data-active-page="home"] .stat-divider {
-    background: rgba(255, 229, 0, 0.2);
+body[data-active-page="home"] .hero-title {
+    color: var(--color-text) !important;
 }
 body[data-active-page="home"] .hero-description {
-    color: rgba(255, 252, 232, 0.7);
+    color: var(--color-text-secondary) !important;
+}
+body[data-active-page="home"] .hero .btn-primary {
+    background: linear-gradient(135deg, #F58B3C 0%, #D6540B 100%) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 20px rgba(214, 84, 11, 0.3) !important;
+}
+body[data-active-page="home"] .hero .btn-primary:hover {
+    box-shadow: 0 8px 30px rgba(214, 84, 11, 0.45) !important;
+    transform: translateY(-3px) !important;
+}
+body[data-active-page="home"] .hero .btn-secondary {
+    color: #D6540B !important;
+    border: 2px solid #D6540B !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+body[data-active-page="home"] .hero .btn-secondary:hover {
+    background: #D6540B !important;
+    color: #FFFFFF !important;
+}
+body[data-active-page="home"] .hero-stats {
+    background: rgba(255, 255, 255, 0.65) !important;
+    border-color: rgba(240, 200, 0, 0.3) !important;
+}
+body[data-active-page="home"] .stat-number,
+body[data-active-page="home"] .stat-plus,
+body[data-active-page="home"] .stat-year {
+    color: var(--color-secondary) !important;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: initial !important;
 }
 body[data-active-page="home"] .stat-label {
-    color: rgba(255, 252, 232, 0.55);
+    color: var(--color-text-secondary) !important;
+}
+body[data-active-page="home"] .stat-divider {
+    background: rgba(240, 200, 0, 0.3) !important;
+}
+body[data-active-page="home"] .section-tag {
+    background: rgba(255, 229, 0, 0.14) !important;
+    border-color: rgba(255, 229, 0, 0.32) !important;
+}
+body[data-active-page="home"] .why-card:hover {
+    border-color: rgba(255, 229, 0, 0.4) !important;
+}
+
+/* Home-page scoped overrides for Navbar yellow glass theme */
+body[data-active-page="home"] .navbar {
+    background: rgba(255, 252, 232, 0.88) !important;
+    border-bottom: 1px solid rgba(240, 200, 0, 0.22) !important;
+}
+body[data-active-page="home"] .navbar.scrolled {
+    background: rgba(255, 252, 232, 0.97) !important;
+    box-shadow: 0 4px 24px rgba(240, 200, 0, 0.15) !important;
+}
+body[data-active-page="home"] .nav-link {
+    color: rgba(92, 74, 16, 0.75) !important;
+}
+body[data-active-page="home"] .nav-link:hover {
+    color: var(--color-primary-dark) !important;
+    background: rgba(240, 200, 0, 0.08) !important;
+}
+body[data-active-page="home"] .nav-link.active {
+    color: var(--color-primary-dark) !important;
+    background: rgba(240, 200, 0, 0.12) !important;
+}
+
+/* Home-page scoped overrides for Footer yellow theme */
+body[data-active-page="home"] .footer {
+    background: #FFF6C2 !important; /* Visible Yellow Parchment */
+    border-top: 1px solid rgba(240, 200, 0, 0.3) !important;
+    color: var(--color-text) !important;
+}
+body[data-active-page="home"] .footer-logo .logo-main {
+    color: var(--color-text) !important;
+}
+body[data-active-page="home"] .footer-desc {
+    color: var(--color-text-secondary) !important;
+}
+body[data-active-page="home"] .footer-links h4 {
+    color: var(--color-text) !important;
+}
+body[data-active-page="home"] .footer-links a {
+    color: var(--color-text-secondary) !important;
+}
+body[data-active-page="home"] .footer-links a:hover {
+    color: var(--color-primary-dark) !important;
+}
+body[data-active-page="home"] .footer-links li {
+    color: var(--color-text-secondary) !important;
+}
+body[data-active-page="home"] .footer-bottom {
+    border-top: 1px solid rgba(240, 200, 0, 0.2) !important;
+}
+body[data-active-page="home"] .footer-bottom p {
+    color: var(--color-text-muted) !important;
+}
+body[data-active-page="home"] .social-link {
+    background: rgba(240, 200, 0, 0.1) !important;
+    border: 1px solid rgba(240, 200, 0, 0.25) !important;
+    color: var(--color-text-secondary) !important;
+}
+body[data-active-page="home"] .social-link:hover {
+    background: var(--gradient-gold) !important;
+    border-color: rgba(240, 200, 0, 0.5) !important;
+    color: var(--color-text) !important;
 }
 /* =============================================
    RESET & BASE
