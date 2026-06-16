@@ -2597,3 +2597,102 @@ body::before {
 .banner-gold {
     background: linear-gradient(90deg, #FFD080, #F5A623, #C47A00);
 }
+
+
+/* =============================================
+   PREMIUM SHINING & GLOWING EFFECTS
+   ============================================= */
+
+/* Gold Text Shine Animation */
+@keyframes textShine {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+body[data-active-page="home"] .text-gradient {
+    background: linear-gradient(90deg, #D4A800 0%, #FFE500 25%, #FFFCE8 50%, #FFE500 75%, #D4A800 100%) !important;
+    background-size: 200% auto !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    animation: textShine 4s linear infinite !important;
+}
+
+/* Glossy Sweep Shine Animation for Cards and Buttons */
+body[data-active-page="home"] .btn,
+body[data-active-page="home"] .why-card,
+body[data-active-page="home"] .feature-item {
+    position: relative !important;
+    overflow: hidden !important;
+}
+body[data-active-page="home"] .btn::after,
+body[data-active-page="home"] .why-card::before,
+body[data-active-page="home"] .feature-item::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -150% !important;
+    width: 80px !important;
+    height: 100% !important;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.55) 50%,
+        rgba(255, 255, 255, 0) 100%
+    ) !important;
+    transform: skewX(-30deg) !important;
+    transition: none !important;
+    pointer-events: none !important;
+    opacity: 1 !important;
+}
+body[data-active-page="home"] .btn:hover::after,
+body[data-active-page="home"] .why-card:hover::before,
+body[data-active-page="home"] .feature-item:hover::before {
+    animation: btnShineSweep 1.4s ease-in-out infinite !important;
+}
+@keyframes btnShineSweep {
+    0% { left: -100%; }
+    100% { left: 150%; }
+}
+
+/* Ambient Shining Glow Behind the Hero Showcase Bottle */
+body[data-active-page="home"] .hero-image-wrapper {
+    box-shadow: 0 20px 80px rgba(255, 229, 0, 0.28) !important;
+    border-radius: var(--radius-lg) !important;
+    transition: box-shadow 0.5s ease !important;
+}
+body[data-active-page="home"] .hero-image-wrapper:hover {
+    box-shadow: 0 20px 90px rgba(255, 229, 0, 0.45) !important;
+}
+body[data-active-page="home"] .hero-glow {
+    background: radial-gradient(circle, rgba(255, 229, 0, 0.55) 0%, rgba(255, 240, 60, 0.2) 50%, transparent 70%) !important;
+    filter: blur(25px) !important;
+}
+
+/* Glowing Floating SVGs */
+body[data-active-page="home"] .floating-element {
+    filter: drop-shadow(0 0 10px rgba(255, 229, 0, 0.8)) drop-shadow(0 0 3px rgba(214, 84, 11, 0.4)) !important;
+    color: #D4A800 !important;
+    animation: floatElement 5s ease-in-out infinite, itemGlowPulse 3s ease-in-out infinite !important;
+}
+@keyframes itemGlowPulse {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 229, 0, 0.8)) drop-shadow(0 0 3px rgba(214, 84, 11, 0.4)); }
+    50% { filter: drop-shadow(0 0 16px rgba(255, 229, 0, 1.0)) drop-shadow(0 0 6px rgba(214, 84, 11, 0.6)); }
+}
+
+/* Glow to Badges and Tags */
+body[data-active-page="home"] .hero-badge,
+body[data-active-page="home"] .section-tag {
+    box-shadow: 0 0 15px rgba(255, 229, 0, 0.28), inset 0 0 8px rgba(255, 229, 0, 0.1) !important;
+    text-shadow: 0 0 8px rgba(255, 229, 0, 0.25) !important;
+}
+
+/* Preloader Pulsing Gold Drop */
+body[data-active-page="home"] .oil-drop {
+    box-shadow: 0 0 35px rgba(255, 229, 0, 0.8), 0 0 15px rgba(214, 84, 11, 0.5) !important;
+    animation: dropBounce 1.2s ease-in-out infinite, oilGlowPulse 2s ease-in-out infinite !important;
+}
+@keyframes oilGlowPulse {
+    0%, 100% { filter: brightness(1) drop-shadow(0 0 5px rgba(255, 229, 0, 0.5)); }
+    50% { filter: brightness(1.25) drop-shadow(0 0 15px rgba(255, 229, 0, 0.95)); }
+}
