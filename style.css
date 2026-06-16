@@ -72,6 +72,100 @@
 }
 
 /* =============================================
+   ROYAL YELLOW THEME FOR HOME PAGE
+   ============================================= */
+body[data-active-page="home"] {
+    /* Vivid Bright Yellow Theme */
+    --color-primary:       #F0C800;  /* Bright Warm Yellow */
+    --color-primary-dark:  #D4A800;  /* Rich Deep Yellow */
+    --color-primary-light: #FFE500;  /* Pure Bright Yellow */
+    --color-secondary:     #8B6914;  /* Burnished Bronze */
+    --color-secondary-light: #B8860B; /* Dark Goldenrod */
+    --color-accent:        #FFE500;  /* Vivid Pure Yellow */
+    --color-accent-dark:   #F0C800;
+
+    /* Backgrounds — Strong Yellow Tints */
+    --color-bg:            #FFFCE8;  /* Warm Yellow Cream */
+    --color-bg-warm:       #FFF5B0;  /* Noticeable Yellow Wash */
+    --color-bg-card:       #FFFEF5;
+    --color-bg-dark:       #1C1800;  /* Warm Dark with Yellow Undertone */
+    --color-bg-section:    #FFF6C2;  /* Visible Yellow Parchment */
+    --color-surface:       rgba(255, 229, 0, 0.08);
+    --color-border:        rgba(255, 229, 0, 0.25);
+    --color-border-hover:  rgba(255, 229, 0, 0.5);
+
+    /* Text */
+    --color-text:          #1A1500;  /* Deep Warm Charcoal */
+    --color-text-secondary:#5C4A10;  /* Warm Brown */
+    --color-text-muted:    #8B7830;  /* Muted Gold-Brown */
+    --color-text-light:    #FFFCE8;
+
+    /* Gradients — More Yellow */
+    --gradient-primary:    linear-gradient(135deg, #FFE500 0%, #F0C800 50%, #D4A800 100%);
+    --gradient-warm:       linear-gradient(135deg, #FFFCE8 0%, #FFF5B0 100%);
+    --gradient-hero:       linear-gradient(135deg, #1C1800 0%, #332E00 50%, #1C1800 100%);
+    --gradient-gold:       linear-gradient(135deg, #FFF066 0%, #FFE500 35%, #F0C800 70%);
+    --gradient-green:      linear-gradient(135deg, #B8860B 0%, #8B6914 100%);
+    --gradient-card:       linear-gradient(145deg, #FFFEF5 0%, #FFF5B0 100%);
+    --gradient-section:    linear-gradient(180deg, #FFFCE8 0%, #FFF6C2 100%);
+
+    /* Shadows & Glows — Brighter Yellow */
+    --shadow-orange:       0 4px 24px rgba(255, 229, 0, 0.3);
+    --shadow-orange-lg:    0 10px 40px rgba(255, 229, 0, 0.4);
+}
+
+/* Home-page scoped overrides for hardcoded rgba colors */
+body[data-active-page="home"] .shape-1 {
+    background: radial-gradient(circle, rgba(255, 229, 0, 0.35), transparent) !important;
+}
+body[data-active-page="home"] .shape-2 {
+    background: radial-gradient(circle, rgba(255, 240, 60, 0.28), transparent) !important;
+}
+body[data-active-page="home"] .shape-3 {
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.22), transparent) !important;
+}
+body[data-active-page="home"] .hero-badge {
+    background: rgba(255, 229, 0, 0.18);
+    border-color: rgba(255, 229, 0, 0.4);
+}
+body[data-active-page="home"] .hero-glow {
+    background: radial-gradient(circle, rgba(255, 229, 0, 0.35) 0%, transparent 70%);
+}
+body[data-active-page="home"] .oil-drop {
+    box-shadow: 0 0 40px rgba(255, 229, 0, 0.6);
+}
+body[data-active-page="home"] .features-strip {
+    background: linear-gradient(135deg, #1C1800, #332E00, #1C1800);
+}
+body[data-active-page="home"] .nav-link:hover {
+    color: var(--color-primary-light);
+    background: rgba(255, 229, 0, 0.1);
+}
+body[data-active-page="home"] .nav-link.active {
+    color: var(--color-primary-light);
+    background: rgba(255, 229, 0, 0.15);
+}
+body[data-active-page="home"] .section-tag {
+    background: rgba(255, 229, 0, 0.14);
+    border-color: rgba(255, 229, 0, 0.32);
+}
+body[data-active-page="home"] .why-card:hover {
+    border-color: rgba(255, 229, 0, 0.4);
+}
+body[data-active-page="home"] .hero-stats {
+    background: rgba(255, 229, 0, 0.08);
+    border-color: rgba(255, 229, 0, 0.16);
+}
+body[data-active-page="home"] .stat-divider {
+    background: rgba(255, 229, 0, 0.2);
+}
+body[data-active-page="home"] .hero-description {
+    color: rgba(255, 252, 232, 0.7);
+}
+body[data-active-page="home"] .stat-label {
+    color: rgba(255, 252, 232, 0.55);
+}
+/* =============================================
    RESET & BASE
    ============================================= */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -85,6 +179,7 @@ body {
     line-height: 1.7;
     overflow-x: hidden;
     min-height: 100vh;
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
 }
 
 h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); line-height: 1.25; font-weight: 500; letter-spacing: -0.01em; }
@@ -232,7 +327,7 @@ button { cursor: pointer; }
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--color-border);
-    transition: background var(--transition-base), box-shadow var(--transition-base);
+    transition: background var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
 .navbar.scrolled {

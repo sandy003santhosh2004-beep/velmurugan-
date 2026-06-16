@@ -115,6 +115,9 @@ function navigateTo(pageId, animate = true) {
 
     if (!targetPage) return;
 
+    // Set active page attribute on body for page-specific theming
+    document.body.setAttribute('data-active-page', pageId);
+
     // Already active — do nothing (only on animated routing clicks)
     if (animate && targetPage.classList.contains('active')) return;
 
