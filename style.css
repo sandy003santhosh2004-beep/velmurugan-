@@ -2610,7 +2610,7 @@ body::before {
     100% { background-position: 0% 50%; }
 }
 body[data-active-page="home"] .text-gradient {
-    background: linear-gradient(90deg, #D4A800 0%, #FFE500 25%, #FFFCE8 50%, #FFE500 75%, #D4A800 100%) !important;
+    background: linear-gradient(90deg, #D6540B 0%, #F5A623 25%, #FFE500 50%, #F5A623 75%, #D6540B 100%) !important;
     background-size: 200% auto !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
