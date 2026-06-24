@@ -44,7 +44,7 @@
     --font-script:  'Pinyon Script', cursive;
 
     /* Spacing */
-    --section-padding: 120px 0;
+    --section-padding: 70px 0;
     --container-width: 1200px;
     --container-padding: 0 24px;
 
@@ -334,7 +334,7 @@ button { cursor: pointer; }
 
 .section-title { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 16px; color: var(--color-text); }
 .section-subtitle { font-size: 1.05rem; color: var(--color-text-secondary); max-width: 600px; margin: 0 auto; }
-.section-header { text-align: center; margin-bottom: 60px; }
+.section-header { text-align: center; margin-bottom: 36px; }
 
 /* =============================================
    REVEAL ANIMATIONS
@@ -638,13 +638,12 @@ button { cursor: pointer; }
    HERO SECTION â€” Dark with warm accents
    ============================================= */
 .hero {
-    min-height: calc(100vh - 80px);
     display: flex;
     align-items: center;
     background: linear-gradient(160deg, #FFF9E0 0%, #FFFCE8 40%, #FFF5B0 70%, #FFE87A 100%);
     position: relative;
     overflow: hidden;
-    padding: 70px 0 60px;
+    padding: 16px 0 28px;
 }
 
 /* Decorative blobs */
@@ -709,8 +708,8 @@ button { cursor: pointer; }
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 20px;
+    gap: 0;
+    margin-bottom: 2px;
 }
 
 .hero-logo-ring {
@@ -749,7 +748,7 @@ button { cursor: pointer; }
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 0;
 }
 
 .hero-logo-subtext {
@@ -803,13 +802,13 @@ button { cursor: pointer; }
     padding: 7px 18px;
     border-radius: 50px;
     letter-spacing: 0.8px;
-    margin-top: 2px;
+    margin-top: 0;
 }
 
 .hero-title {
     font-size: clamp(1.8rem, 3vw, 2.8rem);
     font-weight: 700;
-    margin-bottom: 24px;
+    margin-bottom: 6px;
     line-height: 1.2;
     color: #1A1500;
     text-shadow: 0 2px 8px rgba(0,0,0,0.06);
@@ -828,9 +827,9 @@ button { cursor: pointer; }
    ============================================ */
 .hero-carousel {
     position: relative;
-    max-width: 1920px;
+    max-width: 100%; /* Full width for widescreen banners */
     width: 100%;
-    margin: 0 auto 28px auto;
+    margin: 0 auto 12px auto;
     border-radius: 20px;
     overflow: visible;
     filter: drop-shadow(0 20px 48px rgba(180,140,0,0.22));
@@ -840,7 +839,7 @@ button { cursor: pointer; }
     overflow: hidden;
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 9; /* Match the 1920x1080 banner images */
     border-radius: 20px;
     border: 3px solid rgba(240, 200, 0, 0.5);
     box-shadow: 0 0 0 6px rgba(240,200,0,0.10);
@@ -856,7 +855,6 @@ button { cursor: pointer; }
 .carousel-slide {
     min-width: 100%;
     height: 100%;
-    aspect-ratio: 16 / 9;
     flex-shrink: 0;
     position: relative;
     display: flex;
@@ -868,7 +866,7 @@ button { cursor: pointer; }
 .carousel-slide img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover; /* Cover the slide area perfectly without white spaces */
     display: block;
     transition: transform 0.4s ease;
 }
@@ -947,8 +945,8 @@ button { cursor: pointer; }
     display: flex; 
     justify-content: center;
     gap: 16px; 
-    margin-top: 44px;
-    margin-bottom: 40px; 
+    margin-top: 16px;
+    margin-bottom: 16px; 
     flex-wrap: wrap; 
 }
 
@@ -2601,7 +2599,7 @@ button { cursor: pointer; }
    RESPONSIVE â€” MOBILE
    ============================================= */
 @media (max-width: 768px) {
-    :root { --section-padding: 64px 0; }
+    :root { --section-padding: 40px 0; }
 
     .nav-toggle { display: flex; }
     .nav-cta    { display: none; }
@@ -2626,11 +2624,11 @@ button { cursor: pointer; }
     .nav-links.active { transform: translateX(0); }
     .nav-link { font-size: 1rem; padding: 12px 16px; width: 100%; }
 
-    .hero-container { display: flex; flex-direction: column; align-items: center; gap: 32px; text-align: center; }
+    .hero-container { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
     .hero-logo-box {
         flex-direction: column !important;
         gap: 12px !important;
-        margin-bottom: 24px !important;
+        margin-bottom: 12px !important;
     }
     .hero-logo-img {
         width: 90px !important;
@@ -2675,7 +2673,7 @@ button { cursor: pointer; }
 @media (max-width: 480px) {
     .strip-container    { grid-template-columns: 1fr; }
     .contact-form-wrapper { padding: 22px 14px; }
-    .section-header { margin-bottom: 40px; }
+    .section-header { margin-bottom: 24px; }
 }
 
 
