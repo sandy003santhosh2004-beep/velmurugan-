@@ -1,5 +1,5 @@
-﻿/* =============================================
-   VELMURUGAN OIL SHOP â€” SPA Router & Features
+/* =============================================
+   VELMURUGAN OIL SHOP — SPA Router & Features
    ============================================= */
 
 // Paste your deployed Google Apps Script Web App URL below
@@ -38,7 +38,7 @@ function initPreloader() {
 }
 
 /* =============================================
-   NAVBAR â€” Glassmorphic Scroll Effect
+   NAVBAR — Glassmorphic Scroll Effect
    ============================================= */
 function initNavbar() {
     const navbar = document.getElementById('navbar');
@@ -119,7 +119,7 @@ function navigateTo(pageId, animate = true) {
     // Set active page attribute on body for page-specific theming
     document.body.setAttribute('data-active-page', pageId);
 
-    // Already active â€” do nothing (only on animated routing clicks)
+    // Already active — do nothing (only on animated routing clicks)
     if (animate && targetPage.classList.contains('active')) return;
 
     if (animate) {
@@ -263,7 +263,7 @@ function animateCounter(element) {
 }
 
 /* =============================================
-   CONTACT FORM â€” WhatsApp Integration
+   CONTACT FORM — WhatsApp Integration
    ============================================= */
 function initContactForm() {
     const form = document.getElementById('contact-form');
@@ -310,7 +310,7 @@ function initContactForm() {
                 }).catch(err => console.error('Google Sheets background log failed:', err));
             }
 
-            submitBtn.innerHTML = '<span>âœ… Order Placed!</span>';
+            submitBtn.innerHTML = '<span>✅ Order Placed!</span>';
             submitBtn.style.background = 'linear-gradient(135deg, #2D5016, #1A3B2B)';
 
             const waMsg = encodeURIComponent(
@@ -581,7 +581,7 @@ function initZomatoCart() {
             const isOpen = cartPopover.style.display === 'flex';
             cartPopover.style.display = isOpen ? 'none' : 'flex';
             cartChevron.classList.toggle('open', !isOpen);
-            cartChevron.innerHTML = isOpen ? 'Items â–²' : 'Items â–¼';
+            cartChevron.innerHTML = isOpen ? 'Items ▲' : 'Items ▼';
         });
 
         if (cartClose) {
@@ -589,7 +589,7 @@ function initZomatoCart() {
                 e.stopPropagation();
                 cartPopover.style.display = 'none';
                 cartChevron.classList.remove('open');
-                cartChevron.innerHTML = 'Items â–²';
+                cartChevron.innerHTML = 'Items ▲';
             });
         }
 
@@ -598,7 +598,7 @@ function initZomatoCart() {
             if (!cartPopover.contains(e.target) && e.target !== cartChevron && !cartChevron.contains(e.target)) {
                 cartPopover.style.display = 'none';
                 cartChevron.classList.remove('open');
-                cartChevron.innerHTML = 'Items â–²';
+                cartChevron.innerHTML = 'Items ▲';
             }
         });
     }
@@ -620,7 +620,7 @@ function updateCartBar() {
 
     if (totalItems > 0) {
         if (countEl) countEl.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''} added`;
-        if (totalEl) totalEl.textContent = `Total: â‚¹${totalPrice.toLocaleString()}`;
+        if (totalEl) totalEl.textContent = `Total: ₹${totalPrice.toLocaleString()}`;
         bar.classList.add('active');
     } else {
         bar.classList.remove('active');
@@ -630,7 +630,7 @@ function updateCartBar() {
             const cartChevron = document.getElementById('cart-chevron');
             if (cartChevron) {
                 cartChevron.classList.remove('open');
-                cartChevron.innerHTML = 'Items â–²';
+                cartChevron.innerHTML = 'Items ▲';
             }
         }
     }
@@ -645,7 +645,7 @@ function updateCartBar() {
             div.className = 'cpp-item';
             div.innerHTML = `
                 <span class="cpp-item-name">${item.product} (${item.size}) x ${item.qty}</span>
-                <span class="cpp-item-price">â‚¹${(item.qty * item.price).toLocaleString()}</span>
+                <span class="cpp-item-price">₹${(item.qty * item.price).toLocaleString()}</span>
             `;
             cppList.appendChild(div);
         }
@@ -664,11 +664,11 @@ function generateCartMessage(isWhatsApp = false) {
     let totalPrice = 0;
     for (const key in cartState) {
         const item = cartState[key];
-        msg += `â€¢ ${item.product} (${item.size}) x ${item.qty} â€” â‚¹${(item.qty * item.price).toLocaleString()}\n`;
+        msg += `• ${item.product} (${item.size}) x ${item.qty} — ₹${(item.qty * item.price).toLocaleString()}\n`;
         totalPrice += item.qty * item.price;
     }
 
-    msg += `\nTotal Amount: â‚¹${totalPrice.toLocaleString()}`;
+    msg += `\nTotal Amount: ₹${totalPrice.toLocaleString()}`;
     return msg;
 }
 
@@ -677,7 +677,7 @@ function getCartTotalFormatted() {
     for (const key in cartState) {
         totalPrice += cartState[key].qty * cartState[key].price;
     }
-    return totalPrice > 0 ? `â‚¹${totalPrice.toLocaleString()}` : "N/A";
+    return totalPrice > 0 ? `₹${totalPrice.toLocaleString()}` : "N/A";
 }
 
 /* =============================================
@@ -745,7 +745,7 @@ function updateFormOrderItemsUI() {
 
     const totalValEl = document.getElementById('form-order-total-val');
     if (totalValEl) {
-        totalValEl.textContent = `â‚¹${totalPrice.toLocaleString()}`;
+        totalValEl.textContent = `₹${totalPrice.toLocaleString()}`;
     }
 
     formItems.forEach(item => {
@@ -799,5 +799,4 @@ function updateCatalogQuantitiesUI() {
         }
     });
 }
-
 
