@@ -1,5 +1,5 @@
-/* =============================================
-   VELMURUGAN OIL MILLS â€” Heritage Indian Edition
+﻿/* =============================================
+   VELMURUGAN OIL MILLS Ã¢â‚¬â€ Heritage Indian Edition
    ============================================= */
 
 /* CSS Custom Properties */
@@ -13,7 +13,7 @@
     --color-accent:        #F5A623;  /* Golden Amber */  /* Vivid Gold */ /* Luxury Gold Leaf */
     --color-accent-dark:   #C47A00;
 
-    /* Backgrounds â€” Premium Warm Ivory / Obsidian Dark */
+    /* Backgrounds Ã¢â‚¬â€ Premium Warm Ivory / Obsidian Dark */
     --color-bg:            #FFFBF4;  /* Warm Ivory */  /* True Obsidian */ /* Warm Editorial Ivory */
     --color-bg-warm:       #FFF5E6;  /* Light Saffron Tint */  /* Elevated Dark */ /* Smooth Cream */
     --color-bg-card:       #FFFFFF;  /* Card Dark */
@@ -24,7 +24,7 @@
     --color-border-hover:  rgba(214, 84, 11, 0.4);
 
     /* Text */
-    --color-text:          #1C0A00;  /* Deep Maroon Brown */  /* Warm Ivory White */ /* High-contrast editorial text */
+    --color-text:          #4A2012;  /* Deep Warm Brown */
     --color-text-secondary:#6B4226;  /* Warm Brown */  /* Muted Warm Grey */
     --color-text-muted:    #A07050;  /* Muted Saffron */  /* Deep Muted */
     --color-text-light:    #FFFBF4;
@@ -55,7 +55,7 @@
     --radius-xl:   24px;
     --radius-full: 50%;
 
-    /* Shadows â€” subtle, high-end */
+    /* Shadows Ã¢â‚¬â€ subtle, high-end */
     --shadow-sm:   0 2px 12px rgba(214, 84, 11, 0.06);
     --shadow-md:   0 10px 30px rgba(214, 84, 11, 0.1);
     --shadow-lg:   0 24px 64px rgba(214, 84, 11, 0.12);
@@ -84,7 +84,7 @@ body {
     --color-accent:        #FFE500;  /* Vivid Pure Yellow */
     --color-accent-dark:   #F0C800;
 
-    /* Backgrounds â€” Strong Yellow Tints */
+    /* Backgrounds Ã¢â‚¬â€ Strong Yellow Tints */
     --color-bg:            #FFFCE8;  /* Warm Yellow Cream */
     --color-bg-warm:       #FFF5B0;  /* Noticeable Yellow Wash */
     --color-bg-card:       #FFFEF5;
@@ -95,12 +95,12 @@ body {
     --color-border-hover:  rgba(255, 229, 0, 0.5);
 
     /* Text */
-    --color-text:          #1A1500;  /* Deep Warm Charcoal */
+    --color-text:          #4A2012;  /* Deep Warm Brown */
     --color-text-secondary:#5C4A10;  /* Warm Brown */
     --color-text-muted:    #8B7830;  /* Muted Gold-Brown */
     --color-text-light:    #FFFCE8;
 
-    /* Gradients â€” More Yellow */
+    /* Gradients Ã¢â‚¬â€ More Yellow */
     --gradient-primary:    linear-gradient(135deg, #FFE500 0%, #F0C800 50%, #D4A800 100%);
     --gradient-warm:       linear-gradient(135deg, #FFFCE8 0%, #FFF5B0 100%);
     --gradient-hero:       linear-gradient(135deg, #FFFCE8 0%, #FFF5B0 50%, #FFE500 100%);
@@ -109,7 +109,7 @@ body {
     --gradient-card:       linear-gradient(145deg, #FFFEF5 0%, #FFF5B0 100%);
     --gradient-section:    linear-gradient(180deg, #FFFCE8 0%, #FFF6C2 100%);
 
-    /* Shadows & Glows â€” Brighter Yellow */
+    /* Shadows & Glows Ã¢â‚¬â€ Brighter Yellow */
     --shadow-orange:       0 4px 24px rgba(255, 229, 0, 0.3);
     --shadow-orange-lg:    0 10px 40px rgba(255, 229, 0, 0.4);
 }
@@ -321,7 +321,7 @@ button { cursor: pointer; }
 }
 
 .section-tag::before {
-    content: 'â—';
+    content: 'Ã¢â€”Â';
     font-size: 0.5rem;
     color: var(--color-primary);
     animation: dotPulse 2s ease-in-out infinite;
@@ -414,7 +414,7 @@ button { cursor: pointer; }
 }
 
 /* =============================================
-   NAVBAR â€” Dark Luxury Glass
+   NAVBAR Ã¢â‚¬â€ Dark Luxury Glass
    ============================================= */
 .navbar {
     position: fixed;
@@ -526,7 +526,7 @@ button { cursor: pointer; }
 }
 
 .nav-link.active::after {
-    /* removed underline â€” background highlight is enough */
+    /* removed underline Ã¢â‚¬â€ background highlight is enough */
 }
 
 .nav-cta {
@@ -635,7 +635,7 @@ button { cursor: pointer; }
 .btn-full { width: 100%; justify-content: center; }
 
 /* =============================================
-   HERO SECTION â€” Dark with warm accents
+   HERO SECTION Ã¢â‚¬â€ Dark with warm accents
    ============================================= */
 .hero {
     display: flex;
@@ -810,7 +810,7 @@ button { cursor: pointer; }
     font-weight: 700;
     margin-bottom: 6px;
     line-height: 1.2;
-    color: #1A1500;
+    color: var(--color-text);
     text-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
@@ -823,7 +823,7 @@ button { cursor: pointer; }
 }
 
 /* ============================================
-   HERO CAROUSEL SLIDER — REDESIGNED
+   HERO CAROUSEL SLIDER â€” REDESIGNED
    ============================================ */
 .hero-carousel {
     position: relative;
@@ -850,6 +850,9 @@ button { cursor: pointer; }
     transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
     width: 100%;
     height: 100%;
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .carousel-slide {
@@ -861,6 +864,8 @@ button { cursor: pointer; }
     justify-content: center;
     align-items: center;
     background: linear-gradient(135deg, #FFF9E0, #FFFCE8);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .carousel-slide img {
@@ -964,7 +969,7 @@ button { cursor: pointer; }
 }
 
 /* ============================================
-   HERO STATS BAR — REDESIGNED
+   HERO STATS BAR â€” REDESIGNED
    ============================================ */
 .hero-stats {
     display: flex;
@@ -1034,7 +1039,7 @@ button { cursor: pointer; }
 
 .stat-divider { width: 1px; height: 40px; background: rgba(180,140,0,0.25); flex-shrink: 0; }
 
-/* Hero Visual â€” Oil Bottle */
+/* Hero Visual Ã¢â‚¬â€ Oil Bottle */
 .hero-visual { width: 100%; }
 
 .hero-image-wrapper {
@@ -1101,7 +1106,7 @@ button { cursor: pointer; }
 }
 
 /* =============================================
-   FEATURES STRIP — REDESIGNED
+   FEATURES STRIP â€” REDESIGNED
    ============================================= */
 .features-strip {
     background: linear-gradient(135deg, #FFF8D6 0%, #FFFCE8 50%, #FFF8D6 100%);
@@ -1173,7 +1178,7 @@ button { cursor: pointer; }
     stroke: #fff;
 }
 
-.feature-text strong { display: block; font-size: 0.9rem; font-weight: 700; color: #1A1500; margin-bottom: 2px; }
+.feature-text strong { display: block; font-size: 0.9rem; font-weight: 700; color: var(--color-text); margin-bottom: 2px; }
 .feature-text span   { font-size: 0.78rem; color: #5C4A10; }
 
 @media (max-width: 768px) {
@@ -1183,7 +1188,7 @@ button { cursor: pointer; }
 }
 
 /* =============================================
-   WHY CHOOSE US — REDESIGNED PREMIUM CARDS
+   WHY CHOOSE US â€” REDESIGNED PREMIUM CARDS
    ============================================= */
 .why-us { background: var(--gradient-section); }
 
@@ -1295,7 +1300,7 @@ button { cursor: pointer; }
 }
 
 /* =============================================
-   ABOUT PAGE — Full Redesign
+   ABOUT PAGE â€” Full Redesign
    ============================================= */
 
 /* --- About Hero Banner --- */
@@ -1782,7 +1787,7 @@ button { cursor: pointer; }
 .highlight-item strong { display: block; font-size: 0.95rem; color: var(--color-text); margin-bottom: 4px; }
 .highlight-item p { font-size: 0.85rem; color: var(--color-text-muted); margin: 0; }
 
-/* Responsive â€” About Page */
+/* Responsive Ã¢â‚¬â€ About Page */
 @media (max-width: 1024px) {
     .board-grid { grid-template-columns: 1fr 1fr; }
     .values-grid { grid-template-columns: 1fr 1fr; }
@@ -2585,7 +2590,7 @@ button { cursor: pointer; }
 }
 
 /* =============================================
-   RESPONSIVE â€” TABLET
+   RESPONSIVE Ã¢â‚¬â€ TABLET
    ============================================= */
 @media (max-width: 1024px) {
     .products-grid      { grid-template-columns: repeat(2, 1fr); }
@@ -2596,7 +2601,7 @@ button { cursor: pointer; }
 }
 
 /* =============================================
-   RESPONSIVE â€” MOBILE
+   RESPONSIVE Ã¢â‚¬â€ MOBILE
    ============================================= */
 @media (max-width: 768px) {
     :root { --section-padding: 40px 0; }
@@ -2718,7 +2723,7 @@ body::before {
 .testimonials { background: var(--color-bg) !important; }
 .about-story  { background: var(--color-bg) !important; }
 
-/* ---- Why Cards â€” Dark Glass ---- */
+/* ---- Why Cards Ã¢â‚¬â€ Dark Glass ---- */
 .why-card {
     background: linear-gradient(145deg, #FFFFFF, #FFF8F0) !important;
     border: 1px solid rgba(214,84,11,0.12) !important;
@@ -2732,7 +2737,7 @@ body::before {
 .why-card h3 { color: var(--color-text) !important; }
 .why-card p  { color: var(--color-text-secondary) !important; }
 
-/* ---- Product Cards â€” Dark Premium ---- */
+/* ---- Product Cards Ã¢â‚¬â€ Dark Premium ---- */
 .product-card {
     background: linear-gradient(145deg, #FFFFFF, #FFF8F0) !important;
     border: 1px solid rgba(212,175,55,0.10) !important;
@@ -3011,4 +3016,5 @@ body .oil-drop {
         display: none;
     }
 }
+
 
