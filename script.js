@@ -418,7 +418,8 @@ function initHeroSlider() {
     }
 
     function startAutoPlay() {
-        autoPlayTimer = setInterval(showNext, 5000);
+        // Auto-play disabled by user request
+        // autoPlayTimer = setInterval(showNext, 5000);
     }
 
     function stopAutoPlay() {
@@ -430,7 +431,8 @@ function initHeroSlider() {
 
     function resetAutoPlay() {
         stopAutoPlay();
-        startAutoPlay();
+        // Auto-play disabled
+        // startAutoPlay();
     }
 
     nextButton.addEventListener('click', showNext);
