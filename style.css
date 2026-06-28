@@ -831,7 +831,7 @@ button { cursor: pointer; }
     font-weight: 700;
     margin-bottom: 6px;
     line-height: 1.2;
-    color: var(--color-text);
+    color: var(--color-primary-dark);
     text-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
