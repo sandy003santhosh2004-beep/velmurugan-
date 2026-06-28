@@ -156,7 +156,7 @@ body .feature-text span {
     color: var(--color-text-secondary) !important;
 }
 body .hero-title {
-    color: #FFD700 !important;
+    color: var(--color-primary) !important;
 }
 body .hero-description {
     color: var(--color-text-secondary) !important;
@@ -831,7 +831,7 @@ button { cursor: pointer; }
     font-weight: 700;
     margin-bottom: 6px;
     line-height: 1.2;
-    color: #FFD700; /* Bright Yellow */
+    color: var(--color-primary); /* Orange */
     text-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
