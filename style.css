@@ -391,16 +391,16 @@ button { cursor: pointer; }
 .oil-drop {
     width: 48px; height: 48px;
     background: var(--gradient-gold);
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
+    border-radius: 0 50% 50% 50%;
+    transform: rotate(45deg);
     margin: 0 auto 24px;
     animation: dropBounce 1.2s ease-in-out infinite;
     box-shadow: 0 0 30px rgba(245, 166, 35, 0.5);
 }
 
 @keyframes dropBounce {
-    0%, 100% { transform: rotate(-45deg) translateY(0); }
-    50%       { transform: rotate(-45deg) translateY(-22px); }
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50%       { transform: rotate(45deg) translateY(-22px); }
 }
 
 .preloader-text {
