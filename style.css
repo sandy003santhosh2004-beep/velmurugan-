@@ -156,7 +156,7 @@ body .feature-text span {
     color: var(--color-text-secondary) !important;
 }
 body .hero-title {
-    color: var(--color-text) !important;
+    color: #FFD700 !important;
 }
 body .hero-description {
     color: var(--color-text-secondary) !important;
