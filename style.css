@@ -233,7 +233,7 @@ body .footer {
     color: var(--color-text) !important;
 }
 body .footer-logo .logo-main {
-    color: var(--color-text) !important;
+    color: var(--color-primary) !important;
 }
 body .footer-desc {
     color: var(--color-text-secondary) !important;
@@ -490,7 +490,7 @@ button { cursor: pointer; }
     font-family: var(--font-display);
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--color-primary);
     line-height: 1.1;
 }
 
@@ -2735,7 +2735,7 @@ body::before {
 .nav-link { color: rgba(28,10,0,0.6) !important; }
 .nav-link:hover { color: var(--color-primary) !important; background: rgba(214,84,11,0.07) !important; }
 .nav-link.active { color: var(--color-primary) !important; background: rgba(214,84,11,0.09) !important; }
-.logo-main { color: var(--color-text) !important; }
+.logo-main { color: var(--color-primary) !important; }
 
 /* ---- Section backgrounds ---- */
 .why-us  { background: var(--color-bg-section) !important; }
